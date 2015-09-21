@@ -35,6 +35,9 @@ Simple scripts for publishing to local Maven repository and to Bintray
 	    licenseShort        = 'Apache-2.0'
 	}
 
+	apply from: 'https://raw.githubusercontent.com/momentummodules/GradleBintray/master/maven.gradle'
+	apply from: 'https://raw.githubusercontent.com/momentummodules/GradleBintray/master/bintray.gradle'
+
 
 ## local.properties
 
