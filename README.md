@@ -44,3 +44,25 @@ Simple scripts for publishing to local Maven repository and to Bintray
 	bintray.user=<yourBintrayUser>
 	bintray.apikey=<yourApiKey>
 	bintray.gpg.password=<yourGpgPassword>
+
+##  build.grade
+
+	// Top-level build file where you can add configuration options common to all sub-projects/modules.
+	buildscript {
+	    repositories {
+	        jcenter()
+	    }
+	    dependencies {
+	        ...
+	        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
+	        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+	        ...
+	    }
+	}
+
+	allprojects {
+	    repositories {
+	        jcenter()
+	        mavenLocal()
+	    }
+	}

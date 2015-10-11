@@ -1,64 +1,85 @@
-// contains the tasks for the bintray plugin
-
+/**
+ * Copyright [2015] Momentum Modules
+ *
+ * Contains the tasks for the bintray plugin
+ * and the Artifacts
+*/
 apply plugin: 'com.jfrog.bintray'
 
 version = libraryVersion
 
+/** Bundle sources task */
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
 }
 
+/** Create javadoc task */
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
 
+/** Bundle javadoc task */
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
+
+/** The artifacts */
 artifacts {
     archives javadocJar
     archives sourcesJar
 }
 
-// Bintray
+/**
+ * Read the properties of the properties file. There should be something like
+ *
+ * bintray.user=<yourBintrayUser>
+ * bintray.apikey=<yourApiKey>
+ * bintray.gpg.password=<yourGpgPassword>
+ */
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
-bintray {
-    user = properties.getProperty("bintray.user")
-    key = properties.getProperty("bintray.apikey")
-    configurations = ['archives']
-    publish = false
+bintray
+{
+    user            = properties.getProperty("bintray.user")
+    key             = properties.getProperty("bintray.apikey")
+    configurations  = ['archives']
+    publish         = false
 
-    pkg {
-        repo = bintrayRepo
-        name = bintrayName
-        desc = libraryDescription
-        websiteUrl = siteUrl
-        issueTrackerUrl = issuesUrl
-        vcsUrl = gitUrl
-        publicDownloadNumbers = true
-        licenses = [licenseShort]
-        labels = librarylabels
+    pkg
+    {
+        repo                    = bintrayRepo
+        name                    = bintrayName
+        desc                    = libraryDescription
+        websiteUrl              = siteUrl
+        issueTrackerUrl         = issuesUrl
+        vcsUrl                  = gitUrl
+        publicDownloadNumbers   = true
+        licenses                = [licenseShort]
+        labels                  = librarylabels
         //noinspection GroovyAssignabilityCheck
-        version {
+        version
+        {
             // Bintray logical version name
             name = genVersionName()
             desc = libraryDescription
-            // Optional. The passphrase for GPG signing'
-            gpg {
-               sign = true //Determines whether to GPG sign the files. The default is false
-               passphrase = properties.getProperty("bintray.gpg.password")
+            // Optional. The passphrase for GPG signing
+            gpg
+            {
+               sign         = true
+               passphrase   = properties.getProperty("bintray.gpg.password")
             }
-            //Optional configuration for Maven Central sync of the version
-            /*mavenCentralSync {
-                sync = true //Optional (true by default). Determines whether to sync the version to Maven Central.
-                user = 'userToken' //OSS user token
-                password = 'paasword' //OSS user password
-                close = '1' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+            // Optional: Configuration for Maven Central sync of the version
+            /*
+            mavenCentralSync
+            {
+                sync        = true          // Optional (true by default). Determines whether to sync the version to Maven Central.
+                user        = 'userToken'   // OSS user token
+                password    = 'paasword'    // OSS user password
+                close       = '1'           // Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
             }*/
         }
     }

@@ -1,43 +1,53 @@
-// thats the maven pluging for POM generation
-// and installation to mavenLocal()
+/**
+ * Copyright [2015] Momentum Modules
+ *
+ * The Maven plugin for POM generation and
+ * the installation to mavenLocal() repository
+*/
 apply plugin: 'com.github.dcendents.android-maven'
 
-// Maven Group ID for the artifact
+/** Maven Group ID for the artifact */
 group = publishedGroupId
 
-install {
-    repositories.mavenInstaller {
+install
+{
+    repositories.mavenInstaller
+    {
         // This generates POM.xml with proper parameters
-        pom {
+        pom
+        {
             //noinspection GroovyAssignabilityCheck
-            project {
-                packaging 'aar'
-                groupId publishedGroupId
-                artifactId artifact
-                url siteUrl
-                version libraryVersion
-                // Add your description here
-                name libraryName
+            project
+            {
+                packaging   'aar'
+                groupId     publishedGroupId
+                artifactId  artifact
+                url         siteUrl
+                version     libraryVersion
+                name        libraryName
                 description libraryDescription
-                // Set your license
-                licenses {
-                    license {
-                        name licenseName
-                        url licenseUrl
+                licenses
+                {
+                    license
+                    {
+                        name    licenseName
+                        url     licenseUrl
                     }
                 }
-                developers {
-                    developer {
-                        id developerId
-                        name developerName
-                        email developerEmail
+                developers
+                {
+                    developer
+                    {
+                        id      developerId
+                        name    developerName
+                        email   developerEmail
                     }
                 }
-                scm {
-                    connection gitUrl
+                scm
+                {
+                    connection          gitUrl
                     developerConnection gitUrl
-                    url siteUrl
-
+                    url                 siteUrl
                 }
             }
         }
